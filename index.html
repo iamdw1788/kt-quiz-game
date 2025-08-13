@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>KT 공식 대리점 퀴즈 – 상단 팝업</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --ink-dim: #64748b;
+      --navy-900: #0b1220;
+      --navy-800: #0f172a;
+      --blue-500: #60a5fa;
+      --blue-600: #2563eb;
+      --blue-300: #93c5fd;
+      --cyan-300: #7dd3fc;
+      --warn: #ff4d6d;
+      --cta: #fff;
+      --cta-ink: #111
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Pretendard', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* 딤 + 모달 컨테이너 */
+    .bp-ovl {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+    }
+
+    /* 카드형 팝업 */
+    .bp-top {
+      width: min(90vw, 380px);
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 0;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      color: #222;
+      background: #ffffff;
+      position: relative;
+      transform: scale(0.9);
+      opacity: 0;
+      animation: popup 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popup {
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .bp-close {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      border: 0;
+      background: #f1f5f9;
+      color: #64748b;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 300;
+      transition: all 0.3s ease;
+    }
+
+    .bp-close:hover {
+      background: rgba(0, 0, 0, 0.3);
+      transform: scale(1.1);
+    }
+
+    .bp-hero {
+      padding: 32px 24px 8px;
+      position: relative;
+      text-align: center;
+      color: #1e293b;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .bp-h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.5px;
+      line-height: 1.4;
+      color: #0f172a;
+    }
+
+    .bp-sub {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #64748b;
+      font-weight: 500;
+      display: block;
+      line-height: 1.5;
+    }
+
+    .bp-highlight {
+      background: rgba(219, 234, 254, 0.9);
+      color: #6b7280;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 2px solid rgba(147, 197, 253, 0.5);
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.3);
+      display: inline-block;
+    }
+
+    /* 이미지 애니메이션 */
+    .bp-float {
+      animation: bp-float 3s ease-in-out infinite;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bp-float:nth-child(2) {
+      animation-delay: 1.5s;
+    }
+
+    @keyframes bp-float {
+
+      0%,
+      100% {
+        transform: translateY(0px)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .bp-body {
+      padding: 20px 20px 25px;
+      background: #f8f9ff;
+    }
+
+    .bp-image-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .bp-main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      animation: bp-image-float 4s ease-in-out infinite;
+    }
+
+    @keyframes bp-image-float {
+
+      0%,
+      100% {
+        transform: translateY(0px) scale(1);
+      }
+
+      25% {
+        transform: translateY(-3px) scale(1.002);
+      }
+
+      50% {
+        transform: translateY(-6px) scale(1.005);
+      }
+
+      75% {
+        transform: translateY(-3px) scale(1.002);
+      }
+    }
+
+    .bp-touch-zone {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .bp-touch-zone.left {
+      left: 0;
+      width: 50%;
+    }
+
+    .bp-touch-zone.right {
+      right: 0;
+      width: 50%;
+    }
+
+    .bp-item {
+      flex: 1;
+      cursor: pointer;
+      position: relative;
+      margin: 0;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      background: white;
+    }
+
+    .bp-item:first-child {
+      border-radius: 0;
+    }
+
+    .bp-item:last-child {
+      border-radius: 0;
+    }
+
+    .bp-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .bp-thumb {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      overflow: hidden;
+    }
+
+    .bp-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .3s ease;
+    }
+
+    .bp-item:hover .bp-thumb img {
+      transform: scale(1.05);
+    }
+
+    .bp-tag {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 16px;
+      background: rgba(248, 113, 113, .9);
+      color: #fff;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .bp-ribbon {
+      position: absolute;
+      left: -8px;
+      top: 12px;
+      background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, .3);
+    }
+
+    .bp-cap {
+      display: none;
+    }
+
+    /* 이미지 하단 버튼 */
+    .bp-btn {
+      width: 100%;
+      border: 0;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bp-btn:hover {
+      background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
+
+    .bp-btn:active {
+      transform: translateY(0);
+    }
+
+    .bp-warn {
+      display: none;
+      margin: 15px 0 0;
+      padding: 12px;
+      background: #fff5f5;
+      color: #dc2626;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      font-weight: 500;
+      border: 1px solid #fecaca;
+    }
+
+    .bp-warn {
+      display: none;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #ef4444;
+      text-align: center;
+      font-weight: 600;
+      background: rgba(254, 226, 226, .8);
+      padding: 12px 20px;
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .bp-shake {
+      animation: bp-shake .4s ease-in-out
+    }
+
+    @keyframes bp-shake {
+
+      0%,
+      100% {
+        transform: translateX(0) scale(1)
+      }
+
+      25% {
+        transform: translateX(-8px) scale(1.02)
+      }
+
+      75% {
+        transform: translateX(8px) scale(1.02)
+      }
+    }
+
+    /* 결과 모달 */
+    .bp-ovl2 {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(7, 10, 20, .55);
+      padding: 18px
+    }
+
+    .bp-card2 {
+      width: min(92vw, 420px);
+      border-radius: 18px;
+      box-shadow: 0 26px 60px rgba(0, 0, 0, .45);
+      padding: 18px 16px;
+      text-align: center;
+      color: #e6e9f2;
+      background:
+        radial-gradient(120% 120% at 110% -10%, rgba(96, 165, 250, .20), transparent 60%),
+        linear-gradient(180deg, #0f172a 0%, #0b1220 100%);
+      position: relative;
+      overflow: hidden
+    }
+
+    .bp-pop {
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff
+    }
+
+    .bp-msg {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #cbd5e1
+    }
+
+    .bp-cta {
+      margin-top: 18px;
+      border: 0;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 17px;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, .08);
+      transition: background .15s
+    }
+
+    .bp-cta:hover {
+      background: #1746b0;
+    }
+
+    .bp-cta::after {
+      content: "›";
+      padding-left: 8px
+    }
+
+    /* 카드 내부 컨페티 */
+    .bp-fx {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+      opacity: 1
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 상단 톱시트 팝업 -->
+  <div class="bp-ovl" id="bpOvl" role="dialog" aria-modal="true">
+    <div class="bp-top" role="document">
+      <button class="bp-close" id="bpClose" aria-label="닫기">×</button>
+
+      <div class="bp-hero">
+        <h1 class="bp-h1">Q. 다음 중 KT 직영매장은<br>어디일까요?</h1>
+        <div class="bp-sub">정답을 맞추면 <span class="bp-highlight">5만원 추가 할인 쿠폰</span>을 드려요!</div>
+      </div>
+
+      <div class="bp-body">
+        <div class="bp-image-container" id="bpImageContainer">
+          <div class="bp-touch-zone left" id="bpLeft"></div>
+          <div class="bp-touch-zone right" id="bpRight"></div>
+          <img src="./kt_plaza_sample_250813.png" alt="KT 공식 대리점 찾기" class="bp-main-image">
+        </div>
+        <div class="bp-warn" id="bpWarn">정답이 아니에요! 간판을 비교해주세요</div>
+        <div class="bp-success-msg" id="bpSuccessMsg"
+          style="display: none; margin-top: 16px; font-size: 14px; color: #6b7280; text-align: center; font-weight: 600; background: rgba(219, 234, 254, 0.8); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(147, 197, 253, 0.4);">
+          정답입니다! 직영매장만 KT플라자라는 이름을 쓰고 있어요! 더 전문적인 상담을 받을 수 있답니다😊
+        </div>
+        <button class="bp-btn" id="bpConfirmBtn" style="display: none;">
+          추가 할인쿠폰을 확인해주세요 →
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- 결과 모달 -->
+  <div class="bp-ovl2" id="bpDone" role="dialog" aria-modal="true">
+    <div class="bp-card2" id="bpCard2">
+      <canvas class="bp-fx" id="bpFx"></canvas>
+      <div class="bp-pop">정답!</div>
+      <div class="bp-msg">KT 공식 대리점 방문 시 5만원 추가 할인 쿠폰 발급 준비 완료</div>
+      <button class="bp-cta" id="bpGo">쿠폰 받기</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== 설정 =====
+    const BP = {
+      correct: 'right',   // 공식 대리점 위치: 'left' | 'right' (이미지 기준 오른쪽이 정답)
+      successUrl: 'https://kcms.baropage.com/coupon/SAA0000070?n=M%26S%EC%97%B0%EC%8B%A0%EB%82%B4%EC%97%AD%EC%A7%81%EC%98%81%EC%A0%90&c=1-221964649955&m=%ED%8F%B4%EB%8D%94%EB%B8%94%20%EC%8B%A0%EB%AA%A8%EB%8D%B8%20%EA%B8%B0%EB%B3%80%20%EC%95%88%EB%82%B4_20~40%EB%8C%80&k=dssfj_test_250729_08',
+      showDelayMs: 500,
+      useOnceKey: null   // 예: 'bp_evt_YYYYMMDD' 입력 시 1회만 노출
+    }
+
+    const $ = s => document.querySelector(s)
+    const ovl = $('#bpOvl'), done = $('#bpDone'), warn = $('#bpWarn')
+    const btnX = $('#bpClose'), left = $('#bpLeft'), right = $('#bpRight')
+    const imgL = $('#bpImgL'), imgR = $('#bpImgR'), go = $('#bpGo')
+
+    // 터치 영역 설정
+    const imageContainer = document.getElementById('bpImageContainer')
+    const confirmBtn = document.getElementById('bpConfirmBtn')
+    const successMsg = document.getElementById('bpSuccessMsg')
+
+    // 이미지 클릭 이벤트 위임
+    imageContainer.addEventListener('click', (e) => {
+      // 정확한 클릭 위치 계산
+      const rect = imageContainer.getBoundingClientRect()
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      const isRightSide = x > rect.width / 2
+
+      console.log('클릭 위치:', { x, y, clientX: e.clientX, clientY: e.clientY, rectTop: rect.top, rectLeft: rect.left })
+
+      if (isRightSide) {
+        // 오른쪽 터치 - 정답 (Y 좌표를 위쪽으로 조정)
+        drawCircleEffect(x, y - 60);
+        confettiBurst(x, y - 60);
+        onPick('right', imageContainer)
+      } else {
+        // 왼쪽 터치 - 오답
+        onPick('left', imageContainer)
+      }
+      // 클릭 위치에 컨페티(팡팡 터지는) 효과
+      function confettiBurst(x, y) {
+        const colors = ['#22c55e', '#60a5fa', '#fbbf24', '#f472b6', '#38bdf8', '#a3e635'];
+        const N = 22;
+        for (let i = 0; i < N; i++) {
+          const conf = document.createElement('div');
+          const angle = (Math.PI * 2 * i) / N;
+          const dist = 60 + Math.random() * 30;
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist + 40 + Math.random() * 30;
+          conf.style.position = 'absolute';
+          conf.style.left = (x + 0) + 'px';
+          conf.style.top = (y + 0) + 'px';
+          conf.style.width = '10px';
+          conf.style.height = '10px';
+          conf.style.borderRadius = '50%';
+          conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+          conf.style.opacity = '0.85';
+          conf.style.pointerEvents = 'none';
+          conf.style.zIndex = '20';
+          conf.style.transform = 'scale(1)';
+          conf.style.transition = 'transform 0.7s cubic-bezier(.2,1.2,.4,1), opacity 0.7s';
+          imageContainer.appendChild(conf);
+          setTimeout(() => {
+            conf.style.transform = `translate(${dx}px, ${dy}px) scale(${0.7 + Math.random() * 0.7})`;
+            conf.style.opacity = '0';
+          }, 10);
+          setTimeout(() => {
+            if (conf.parentNode) conf.parentNode.removeChild(conf);
+          }, 800);
+        }
+      }
+      // 클릭 위치에 펜으로 그린 듯한 노란색 원 SVG를 자연스럽게 그려지는 애니메이션으로 표시
+      function drawCircleEffect(x, y) {
+        // 기존의 SVG 원 제거
+        const existingSvg = imageContainer.querySelector('svg[data-circle="true"]');
+        if (existingSvg) {
+          imageContainer.removeChild(existingSvg);
+        }
+
+        console.log('동그라미 그리기 위치:', { x, y })
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('width', '70');
+        svg.setAttribute('height', '70');
+        svg.setAttribute('data-circle', 'true');
+        svg.style.position = 'absolute';
+        svg.style.left = (x - 35) + 'px';
+        svg.style.top = (y - 35) + 'px';
+        svg.style.pointerEvents = 'none';
+        svg.style.zIndex = '11';
+
+        // 손그림 느낌의 약간 불규칙한 원
+        const circle = document.createElementNS(svgNS, 'ellipse');
+        circle.setAttribute('cx', '35');
+        circle.setAttribute('cy', '35');
+        circle.setAttribute('rx', '28');
+        circle.setAttribute('ry', '28');
+        circle.setAttribute('stroke', '#fbbf24'); // 노란색으로 변경
+        circle.setAttribute('stroke-width', '5');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke-dasharray', '8 3 6 4 9 2 7 3'); // 더 자연스러운 손그림 느낌
+        circle.setAttribute('stroke-linecap', 'round');
+        circle.setAttribute('opacity', '0.9');
+
+        // 그려지는 애니메이션 효과
+        const circumference = 2 * Math.PI * 28; // 원의 둘레
+        circle.setAttribute('stroke-dasharray', circumference);
+        circle.setAttribute('stroke-dashoffset', circumference);
+        circle.style.animation = 'drawCircle 0.8s ease-out forwards';
+
+        svg.appendChild(circle);
+        imageContainer.appendChild(svg);
+
+        // CSS 애니메이션을 동적으로 추가
+        if (!document.getElementById('circleAnimation')) {
+          const style = document.createElement('style');
+          style.id = 'circleAnimation';
+          style.textContent = `
+            @keyframes drawCircle {
+              0% {
+                stroke-dashoffset: ${circumference};
+                opacity: 0.3;
+              }
+              50% {
+                opacity: 0.9;
+              }
+              100% {
+                stroke-dashoffset: 0;
+                opacity: 0.8;
+              }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+    })
+
+    // 자동 진입: 상단 팝업
+    window.addEventListener('DOMContentLoaded', () => {
+      if (BP.useOnceKey && localStorage.getItem(BP.useOnceKey)) return
+      setTimeout(() => {
+        document.body.style.overflow = 'hidden'
+        ovl.style.display = 'flex'
+        if (BP.useOnceKey) localStorage.setItem(BP.useOnceKey, '1')
+      }, BP.showDelayMs)
+    })
+
+    btnX.addEventListener('click', () => closeTop())
+    left.addEventListener('click', () => onPick('left', left))
+    right.addEventListener('click', () => onPick('right', right))
+    go.addEventListener('click', () => location.href = BP.successUrl)
+    // 확인 버튼 클릭 시 화려한 컨페티 효과와 함께 다음 페이지로 이동
+    confirmBtn.addEventListener('click', (e) => {
+      // 버튼 위치에서 대형 컨페티 폭발 효과
+      const rect = confirmBtn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // 전체 화면 컨페티 효과
+      createFullScreenConfetti();
+
+      // 버튼에서 폭발하는 컨페티
+      createButtonConfetti(centerX, centerY);
+
+      // 1초 후 페이지 이동
+      setTimeout(() => {
+        location.href = BP.successUrl;
+      }, 1000);
+    });
+
+    function closeTop() {
+      ovl.style.display = 'none'
+      document.body.style.overflow = ''
+    }
+
+    function onPick(choice, el) {
+      const ok = choice === BP.correct
+      if (ok) {
+        // 정답일 때 성공 메시지와 확인 버튼 표시
+        successMsg.style.display = 'block'
+        confirmBtn.style.display = 'block'
+        warn.style.display = 'none'
+
+        // 이미지 애니메이션 멈추기
+        const mainImage = document.querySelector('.bp-main-image')
+        if (mainImage) {
+          mainImage.style.animation = 'none'
+          mainImage.style.transform = 'translateY(0px) scale(1)'
+        }
+      } else {
+        // 오답일 때 경고 메시지 표시
+        warn.style.display = 'block'
+        successMsg.style.display = 'none'
+        el.classList.remove('bp-shake')
+        void el.offsetWidth // 리플로우 강제 실행
+        el.classList.add('bp-shake')
+        setTimeout(() => {
+          warn.style.display = 'none'
+        }, 900)
+      }
+    }
+
+    // 결과 모달 + 카드 내부 컨페티
+    function showDone() {
+      done.style.display = 'flex'
+      const fx = document.getElementById('bpFx')
+      const card = document.getElementById('bpCard2')
+      fx.style.display = 'block'
+      fx.style.opacity = '1'
+      fx.width = card.clientWidth
+      fx.height = card.clientHeight
+      confettiInCanvas(fx, 1000, 350)    // 1초 낙하 + 0.35초 페이드아웃
+    }
+
+    // 전체 화면 컨페티 효과
+    function createFullScreenConfetti() {
+      const colors = ['#fbbf24', '#f59e0b', '#60a5fa', '#3b82f6', '#10b981', '#06d6a0', '#f472b6', '#ec4899'];
+      const confettiCount = 150;
+
+      for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.style.position = 'fixed';
+          confetti.style.left = Math.random() * window.innerWidth + 'px';
+          confetti.style.top = '-10px';
+          confetti.style.width = (8 + Math.random() * 8) + 'px';
+          confetti.style.height = (8 + Math.random() * 8) + 'px';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+          confetti.style.zIndex = '9999';
+          confetti.style.pointerEvents = 'none';
+          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+          confetti.style.transition = 'all 3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+
+          document.body.appendChild(confetti);
+
+          // 애니메이션 시작
+          setTimeout(() => {
+            confetti.style.top = (window.innerHeight + 50) + 'px';
+            confetti.style.left = (parseInt(confetti.style.left) + (-200 + Math.random() * 400)) + 'px';
+            confetti.style.transform = `rotate(${Math.random() * 720}deg) scale(0.5)`;
+            confetti.style.opacity = '0';
+          }, 50);
+
+          // 제거
+          setTimeout(() => {
+            if (confetti.parentNode) {
+              confetti.parentNode.removeChild(confetti);
+            }
+          }, 3500);
+        }, i * 20);
+      }
+    }
+
+    // 버튼에서 폭발하는 컨페티
+    function createButtonConfetti(centerX, centerY) {
+      const colors = ['#fbbf24', '#f59e0b', '#60a5fa', '#3b82f6', '#10b981', '#06d6a0'];
+      const burstCount = 80;
+
+      for (let i = 0; i < burstCount; i++) {
+        const confetti = document.createElement('div');
+        const angle = (Math.PI * 2 * i) / burstCount;
+        const velocity = 150 + Math.random() * 100;
+        const size = 6 + Math.random() * 8;
+
+        confetti.style.position = 'fixed';
+        confetti.style.left = centerX + 'px';
+        confetti.style.top = centerY + 'px';
+        confetti.style.width = size + 'px';
+        confetti.style.height = size + 'px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.borderRadius = Math.random() > 0.3 ? '50%' : '0';
+        confetti.style.zIndex = '9999';
+        confetti.style.pointerEvents = 'none';
+        confetti.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+
+        document.body.appendChild(confetti);
+
+        // 폭발 애니메이션
+        setTimeout(() => {
+          const dx = Math.cos(angle) * velocity;
+          const dy = Math.sin(angle) * velocity + Math.random() * 100;
+          confetti.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 720}deg) scale(0.3)`;
+          confetti.style.opacity = '0';
+        }, 50);
+
+        // 제거
+        setTimeout(() => {
+          if (confetti.parentNode) {
+            confetti.parentNode.removeChild(confetti);
+          }
+        }, 2000);
+      }
+    }
+
+    // 브랜드 컬러 컨페티 + 페이드아웃
+    function confettiInCanvas(canvas, duration = 900, fade = 300) {
+      const ctx = canvas.getContext('2d')
+      const W = canvas.width, H = canvas.height
+      const colors = ['#60a5fa', '#2563eb', '#7dd3fc', '#93c5fd', '#ffffff']
+      const N = 120
+      const parts = Array.from({ length: N }).map(() => ({
+        x: Math.random() * W, y: -Math.random() * H * .1, r: 3 + Math.random() * 5,
+        vx: -1 + Math.random() * 2, vy: 2 + Math.random() * 4,
+        c: colors[(Math.random() * colors.length) | 0]
+      }))
+      const t0 = performance.now()
+        ; (function loop(t) {
+          const el = t - t0
+          ctx.clearRect(0, 0, W, H)
+          parts.forEach(p => {
+            p.x += p.vx; p.y += p.vy
+            ctx.fillStyle = p.c
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill()
+          })
+          if (el < duration) requestAnimationFrame(loop)
+          else {
+            canvas.style.transition = `opacity ${fade}ms ease`
+            canvas.style.opacity = '0'
+            setTimeout(() => {
+              ctx.clearRect(0, 0, W, H)
+              canvas.style.display = 'none'
+              canvas.style.transition = ''
+              canvas.style.opacity = '1'
+            }, fade)
+          }
+        })(t0)
+    }
+  </script>
+</body>
+
+</html>
